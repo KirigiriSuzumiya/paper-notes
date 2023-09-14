@@ -1,6 +1,6 @@
 # Swin Transformer: Hierarchical Vision Transformer using Shifted Windows
 
-![teaser](https://github.com/microsoft/Swin-Transformer/raw/main/figures/teaser.png)
+![teaser](assets/teaser.png)
 
 | Vision                      | Language                  | Difficulty                                                   |
 | --------------------------- | ------------------------- | ------------------------------------------------------------ |
@@ -32,6 +32,42 @@ Swin Transformer, which capably serves as a general-purpose backbone for compute
 
 ### Swin Transformer block
 
-Swin Transformer is built by replacing the standard multi-head self attention (MSA) module in a Transformer block by a module based on shifted windows, with other layers kept the same. A Swin Transformer block consists of a shifted window based MSA module, followed by a 2-layer MLP with GELU nonlinearity in between. A LayerNorm (LN) layer is applied before each MSA module and each MLP, and a residual connection is applied after each module.
+![image-20230914215823976](assets/image-20230914215823976.png)
+
+Swin Transformer is built by replacing the standard multi-head self attention (MSA) module in a Transformer block by a module based on shifted windows, with other layers kept the same. 
+
+- A Swin Transformer block consists of a shifted window based MSA module, followed by a 2-layer MLP with GELU nonlinearity in between. 
+- A LayerNorm (LN) layer is applied before each MSA module and each MLP, and a residual connection is applied after each module.
 
 ### Shifted Window based Self-Attention
+
+The window-based self-attention module lacks connections across windows, which limits its modeling power.
+
+#### Relative position bias
+
+In computing self-attention, we include a relative position bias $B ∈ R^{M^2×M^2}$ to each head in computing similarity:
+$$
+Attention(Q,K,V)=softmax(\frac{QK^T}{\sqrt{d}}+B)V
+$$
+
+where $Q,K,V \in \real^{M^2\times d}$ are the $query, key \ and \ value$ matrices
+
+
+
+
+
+#### detailed architecture specifications
+
+default Architecture Variants:
+
+- window size is set to $M=7$
+- query dimension of each head is $d=32$
+- the expansion layer of each MLP is $α = 4$
+
+![image-20230914215659683](assets/image-20230914215659683.png)
+
+take **Swin-T** as example:
+
+- origin input size is:[224, 224, 3]
+- after patch splitting ($\frac{224}{4}=56$) and linear embedding layer:[56, 56, 96]
+- 3 head with dimension of 32 result in $32 \times 3=96$ channels

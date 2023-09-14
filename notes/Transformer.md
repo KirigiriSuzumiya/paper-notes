@@ -45,7 +45,7 @@ MultiHead(Q,K,V)= Concat(head_1,\dots,head_h)W^O \\
 $$
 where $ head_i=Attention(QW^Q_i,KW^K_i,VW^V_i)$ 
 
-and the projections are parameter matrices $ W^Q_i \in \real^{d_{model}\times d_k},W^K_i \in \real^{d_{model}\times d_k},W^V_i \in \real^{d_{model}\times d_v},W^O \in \real^{hd_v\times d_model}$
+and the projections are parameter matrices $ W^Q_i \in \real^{d_{model}\times d_k},W^K_i \in \real^{d_{model}\times d_k},W^V_i \in \real^{d_{model}\times d_v},W^O \in \real^{hd_v\times d_{model}}$
 
 In this work we employ $h = 8$ parallel attention layers, or heads. For each of these we use $d_k = d_v = d_{model}/h = 64$. Due to the reduced dimension of each head, the total computational cost is similar to that of single-head attention with full dimensionality.
 
